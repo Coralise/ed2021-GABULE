@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Wen Portfolio</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body class="grey darken-4">
+    <nav class="grey darken-4" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="index.html" class="brand-logo"><img src="img/LogoWnB.png" style="width:115px"/></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="white-text" href="counter.html">Counter</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container grey darken-4 margin-top">
+        <div class="row">
+            <div class="col s6 white-text center bold">
+                Preparatory Assessment #3
+            </div>
+            <div class="col s6 white-text center bold">
+                Sample
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6 white-text">
+                <h5>Preparatory Assessment #3:</h5>
+                <h5>Simple Counter</h5>
+            </div>
+            <div class="col s6 white-text center">
+                <div class="row">
+                    <div class="col s4">
+                        <a class="red lighten-1 waves-effect waves-light btn" onclick="min2()"><i class="large material-icons">exposure_neg_2</i></a>
+                        <a class="red lighten-1 waves-effect waves-light btn" onclick="min1()"><i class="large material-icons">exposure_neg_1</i></a>
+                    </div>
+                    <div class="col s4 font-size-25">
+                        <span id="counterLabel">00</span>
+                    </div>
+                    <div class="col s4">
+                        <a class="blue lighten-1 waves-effect waves-light btn" onclick="add1()"><i class="large material-icons">exposure_plus_1</i></a>
+                        <a class="blue lighten-1 waves-effect waves-light btn" onclick="add2()"><i class="large material-icons">exposure_plus_2</i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="white-text align-wrapper">
+                        <input disabled type="text" class="browser-default grey darken-4 white-border round-corners white-text num-field center" style="width: 200px;" id="numField">
+                        <a class="green lighten-1 waves-effect waves-light btn round-corners" style="margin-left:5px;" onclick="printNum()"><i class="large material-icons">content_copy</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer grey darken-4">
+        <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+            <p class="grey-text text-lighten-4">Huge thanks to <span class="red-text text-lighten-4">Materialize</span> for allowing me to easily create this webpage portfolio.</p>
+            </div>
+            <div class="col l3 s12">
+            <h5 class="white-text">Connect</h5>
+            <ul>
+                <li><a class="blue-text text-lighten-4" href="https://www.facebook.com/Waynezki" target="_blank">Facebook</a></li>
+                <li><a class="blue-text text-lighten-2" href="https://discord.gg/WAaH3UHj3u" target="_blank">Discord</a></li>
+                <li><a class="purple-text" href="https://github.com/Coralise" target="_blank">Github</a></li>
+                <li><a class="pink-text text-lighten-4" href="https://www.behance.net/alphazed1" target="_blank">Behance</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+        <div class="footer-copyright">
+        <div class="container">
+        Made by <a class="red-text text-lighten-4" href="http://materializecss.com">Materialize</a>
+        </div>
+        </div>
+    </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js">
+  </script>
+  <script src="js/materialize.js">
+  </script>
+  <script src="js/init.js">
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elemsColl = document.querySelectorAll('.collapsible');
+      var collapsible = M.Collapsible.init(elemsColl);
+      var elemsCar = document.querySelectorAll('.carousel');
+      var carousel = M.Carousel.init(elemsCar);
+      var elemsMat = document.querySelectorAll('.materialboxed');
+      var matBox = M.Materialbox.init(elemsMat);
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    });
+
+    function add1() {
+        var cLabel = document.getElementById('counterLabel');
+        var num = Number(cLabel.innerHTML);
+        num++;
+        if (num > -10 && num < 10) {
+            if (num.toString().charAt(0) == '-') num = "-0" + (-num);
+            else num = "0" + num;
+        }
+        cLabel.innerHTML = num;
+    }
+    function min1() {
+        var cLabel = document.getElementById('counterLabel');
+        var num = Number(cLabel.innerHTML);
+        num--;
+        if (num > -10 && num < 10) {
+            if (num.toString().charAt(0) == '-') num = "-0" + (-num);
+            else num = "0" + num;
+        }
+        cLabel.innerHTML = num;
+    }
+    function add2() {
+        var cLabel = document.getElementById('counterLabel');
+        var num = Number(cLabel.innerHTML);
+        num+=2;
+        if (num > -10 && num < 10) {
+            if (num.toString().charAt(0) == '-') num = "-0" + (-num);
+            else num = "0" + num;
+        }
+        cLabel.innerHTML = num;
+    }
+    function min2() {
+        var cLabel = document.getElementById('counterLabel');
+        var num = Number(cLabel.innerHTML);
+        num-=2;
+        if (num > -10 && num < 10) {
+            if (num.toString().charAt(0) == '-') num = "-0" + (-num);
+            else num = "0" + num;
+        }
+        cLabel.innerHTML = num;
+    }
+    function printNum() {
+        var cLabel = document.getElementById('counterLabel');
+        var numText = cLabel.innerHTML;
+        document.getElementById('numField').value = numText;
+        navigator.clipboard.writeText(numText);
+        M.toast({html: 'Saved to clipboard!'});
+    }
+  </script>
+
+  </body>
+</html>
