@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Wen Portfolio</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body class="grey darken-4">
+    <nav class="grey darken-4 margin-bottom" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="index.html" class="brand-logo"><img src="img/LogoWnB.png" style="width:115px"/></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="white-text" href="counter.html">Counter</a></li>
+                <li><a class="white-text" href="running_total.html">Running Total</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+          <div class="col s6 white-text center bold">
+              Preparatory Assessment #4
+          </div>
+          <div class="col s6 white-text center bold">
+              Running Total
+          </div>
+      </div>
+      <div class="row">
+        <form class="col s12">
+          <div class="row valign-wrapper">
+            <div class="col s8 right-align">
+              <input type="number" placeholder="Amount" id="userInp" class="browser-default running-total grey darken-3" onchange="validateInp()">
+            </div>
+            <div class="col s4 left-align">
+              <label>User Input</label>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <div class="col s8 right-align">
+              <input disabled type="number" placeholder="Tax" id="tax" class="browser-default running-total grey darken-3">
+            </div>
+            <div class="col s4 left-align">
+              <label>+12% Tax</label>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <div class="col s8 right-align">
+              <input disabled type="number" placeholder="Total" id="total" class="browser-default running-total grey darken-3">
+            </div>
+            <div class="col s4 left-align">
+              <label >Subtotal + Tax</label>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <div class="col s8 right-align">
+              <input disabled type="number" placeholder="Amount Paid" id="amountPaid" class="browser-default running-total grey darken-3" onchange="validateAmountPaid()">
+            </div>
+            <div class="col s4 left-align">
+              <label id="amountPaidLabel">Minimum: Total</label>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <div class="col s8 right-align">
+              <input disabled type="number" placeholder="Change" id="change" class="browser-default running-total grey darken-3">
+            </div>
+            <div class="col s4 left-align">
+              <label>Amount Paid - Total</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s8 right-align">
+              <a class="blue lighten-1 waves-effect waves-light btn bold transition-200 disabled round-corners" onclick="pay()" id="payBtn"><i class="large material-icons left">attach_money</i>Pay</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="page-footer grey darken-4">
+        <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+            <p class="grey-text text-lighten-4">Huge thanks to <span class="red-text text-lighten-4">Materialize</span> for allowing me to easily create this webpage portfolio.</p>
+            </div>
+            <div class="col l3 s12">
+            <h5 class="white-text">Connect</h5>
+            <ul>
+                <li><a class="blue-text text-lighten-4" href="https://www.facebook.com/Waynezki" target="_blank">Facebook</a></li>
+                <li><a class="blue-text text-lighten-2" href="https://discord.gg/WAaH3UHj3u" target="_blank">Discord</a></li>
+                <li><a class="purple-text" href="https://github.com/Coralise" target="_blank">Github</a></li>
+                <li><a class="pink-text text-lighten-4" href="https://www.behance.net/alphazed1" target="_blank">Behance</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+        <div class="footer-copyright">
+        <div class="container">
+        Made by <a class="red-text text-lighten-4" href="http://materializecss.com">Materialize</a>
+        </div>
+        </div>
+    </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js">
+  </script>
+  <script src="js/materialize.js">
+  </script>
+  <script src="js/init.js">
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elemsColl = document.querySelectorAll('.collapsible');
+      var collapsible = M.Collapsible.init(elemsColl);
+      var elemsCar = document.querySelectorAll('.carousel');
+      var carousel = M.Carousel.init(elemsCar);
+      var elemsMat = document.querySelectorAll('.materialboxed');
+      var matBox = M.Materialbox.init(elemsMat);
+      
+    });
+
+    var isInpValid;
+    var isAmountPaidValid;
+
+    function validateInp() {
+        var userInp = document.getElementById("userInp");
+        var num = userInp.value;
+        if (num >= 100 && num <= 10000) {
+          isInpValid = true;
+          calculateVals();
+          checkValids();
+        } else {
+          isInpValid = false;
+          checkValids();
+        }
+    }
+    function validateAmountPaid() {
+        var amountPaid = document.getElementById("amountPaid");
+        var total = document.getElementById("total");
+        var change = document.getElementById("change");
+        var num = Number(amountPaid.value);
+        change.value = null;
+        if (num >= Number(total.value)) {
+          isAmountPaidValid = true;
+        } else {
+          isAmountPaidValid = false;
+        }
+        checkValids();
+    }
+    function calculateVals() {
+        var userInp = document.getElementById("userInp");
+        var total = document.getElementById("total");
+        var tax = document.getElementById("tax");
+        var amountPaid = document.getElementById("amountPaid");
+        var amountPaidLabel = document.getElementById("amountPaidLabel");
+        var change = document.getElementById("change");
+
+        var inpNum = Number(userInp.value);
+        var taxNum = inpNum * 0.12;
+        tax.value = taxNum.toFixed(2);
+        total.value = (inpNum + taxNum).toFixed(2);
+        amountPaid.value = total.value;
+        amountPaidLabel.innerHTML = "Minimum: " + total.value;
+        change.value = null;
+        validateAmountPaid();
+    }
+    function disableAmountPaid() {
+      var amountPaid = document.getElementById("amountPaid");
+      amountPaid.disabled = true;
+    }
+    function enableAmountPaid() {
+      var amountPaid = document.getElementById("amountPaid");
+      amountPaid.disabled = false;
+    }
+    function disablePay() {
+      var payBtn = document.getElementById("payBtn");
+      payBtn.classList.add("disabled");
+    }
+    function enablePay() {
+      var payBtn = document.getElementById("payBtn");
+      payBtn.classList.remove("disabled");
+    }
+    function checkValids() {
+      if (isInpValid) enableAmountPaid();
+      else {
+        disableAmountPaid();
+        clearFields();
+      }
+      if (isInpValid && isAmountPaidValid) enablePay();
+      else disablePay();
+    }
+    function clearFields() {
+      var tax = document.getElementById("tax");
+      var total = document.getElementById("total");
+      var amountPaid = document.getElementById("amountPaid");
+      var change = document.getElementById("change");
+      var amountPaidLabel = document.getElementById("amountPaidLabel");
+
+      tax.value = null;
+      total.value = null;
+      amountPaid.value = null;
+      change.value = null;
+      amountPaidLabel.innerHTML = "Minimum: Total";
+    }
+    function pay() {
+      var total = document.getElementById("total");
+      var amountPaid = document.getElementById("amountPaid");
+      var change = document.getElementById("change");
+
+      var changeNum = Number(amountPaid.value) - Number(total.value);
+      change.value = changeNum.toFixed(2);
+    }
+  </script>
+
+  </body>
+</html>
