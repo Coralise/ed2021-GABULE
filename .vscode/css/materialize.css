@@ -9105,6 +9105,14 @@ input[type=range]::-ms-thumb {
   border-radius: 30px;
 }
 
+.round-corners-left {
+  border-radius: 20px 5px 5px 20px;
+}
+
+.round-corners-right {
+  border-radius: 5px 20px 20px 5px;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -9185,4 +9193,17 @@ input::-webkit-inner-spin-button {
 
 .transition-500 {
   transition: .5s;
+}
+
+.center-table {
+  text-align: center;
+}
+
+.center-table td,th {
+  text-align: center;
+  width: 25%;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

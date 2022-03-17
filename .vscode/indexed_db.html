@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Wen Portfolio</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body class="grey darken-4 white-text">
+    <nav class="grey darken-4" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="index.html" class="brand-logo"><img src="img/LogoWnB.png" style="width:115px"/></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="white-text" href="counter.html">Counter</a></li>
+                <li><a class="white-text" href="running_total.html">Running Total</a></li>
+                <li class="active"><a class="white-text" href="indexed_db.html">IndexedDB</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container margin-top">
+        <a id="loadBtn" class="btn round-corners-left green accent-4 waves-effect waves-light">Load Data</a>
+        <a id="resetBtn" class="btn round-corners-right red accent-4 waves-effect waves-light">Reset Data</a>
+    </div>
+
+    <div class="container margin-top">
+        <table class="center-table">
+            <thead>
+                <tr class="blue-text text-accent-2 text-shadow">
+                    <th>#</th>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+    
+            <tbody id="tBody">
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="page-footer grey darken-4 margin-top">
+        <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+            <p class="grey-text text-lighten-4">Huge thanks to <span class="red-text text-lighten-4">Materialize</span> for allowing me to easily create this webpage portfolio.</p>
+            </div>
+            <div class="col l3 s12">
+            <h5 class="white-text">Connect</h5>
+            <ul>
+                <li><a class="blue-text text-lighten-4" href="https://www.facebook.com/Waynezki" target="_blank">Facebook</a></li>
+                <li><a class="blue-text text-lighten-2" href="https://discord.gg/WAaH3UHj3u" target="_blank">Discord</a></li>
+                <li><a class="purple-text" href="https://github.com/Coralise" target="_blank">Github</a></li>
+                <li><a class="pink-text text-lighten-4" href="https://www.behance.net/alphazed1" target="_blank">Behance</a></li>
+            </ul>
+            </div>
+        </div>
+        </div>
+        <div class="footer-copyright">
+        <div class="container">
+        Made by <a class="red-text text-lighten-4" href="http://materializecss.com">Materialize</a>
+        </div>
+        </div>
+    </footer>
+
+    <div id="imgView" class="modal grey darken-4 hide-scrollbar" style="width:300px;">
+        <div class="modal-content" style="width:100%;">
+            <img id="modalImg" src="https:\/\/www.themealdb.com\/images\/media\/meals\/wvqpwt1468339226.jpg" style="width:100%;">
+            <h6 id="modalName" class="bold">Name</h6>
+            <h6 id="modalPrice">Price</h6>
+        </div>
+        <div class="modal-footer grey darken-4" style="width:100%;">
+            <a href="#!" class="modal-close waves-effect waves-light round-corners red accent-4 btn bold">Ok, Cool!</a>
+        </div>
+    </div>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js">
+  </script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script><script src="https://unpkg.com/localbase/dist/localbase.min.js"></script>
+  <script>
+    let db = new Localbase('db');
+
+    $("#loadBtn").click(function() {
+        db.collection("foods").get().then(foods => {
+            if (foods.length == 0) {
+                fetch("item_data.json")
+                    .then(res => res.json())
+                    .then(data => {
+                        
+                        for (var i = 0;i < data.length;i++) {
+                            if (i != data.length-1) {
+                                db.collection("foods").add({
+                                    id: data[i]["id"],
+                                    name: data[i]["name"],
+                                    price: "₱" + data[i]["price"],
+                                    image: data[i]["image"]
+                                });
+                            } else {
+                                db.collection("foods").add({
+                                    id: data[i]["id"],
+                                    name: data[i]["name"],
+                                    price: "₱" + data[i]["price"],
+                                    image: data[i]["image"]
+                                }).then(res => {
+                                    displayFoods();
+                                    console.log("Saved and loaded!");
+                                });
+                            }
+                        }
+
+                    });
+            } else {
+                $("#tBody").empty();
+                displayFoods();
+                console.log("Loaded!");
+            }
+        });
+    });
+
+    $("#resetBtn").click(function() {
+        db.collection("foods").delete().then(res => console.log("Cleared!"));
+        $("#tBody").empty();
+    });
+
+    $(document).on('click', '.modal-trigger', function () {
+        const id = $(this).attr("data-id");
+        const modalImg = $("#modalImg");
+        modalImg.attr("src", "img/loading.gif");
+
+        db.collection("foods").doc({ id: id}).get().then(food => {
+            const modalName = $("#modalName");
+            const modalPrice = $("#modalPrice");
+            modalImg.attr("src", food["image"]);
+            modalName.html(food["name"]);
+            modalPrice.html(food["price"]);
+        });
+    });
+
+    // <tr>
+    //   <td>ID</td>
+    //   <td>Name</td>
+    //   <td>Price</td>
+    //   <td><a class="btn-small round-corners waves-effect waves-light blue accent-2 modal-trigger" data-target="imgView" data-id="ID"><i class="material-icons left">image</i>view</a></td>
+    // </tr>
+    function displayFoods() {
+        const tBody = $("#tBody");
+        db.collection("foods").get().then(foods => {
+            for (var i = 0;i < foods.length;i++) {
+                const tr = document.createElement("tr");
+                const tdId = document.createElement("td");
+                tdId.innerHTML = foods[i]["id"];
+                const tdName = document.createElement("td");
+                tdName.innerHTML = foods[i]["name"];
+                const tdPrice = document.createElement("td");
+                tdPrice.innerHTML = foods[i]["price"];
+                const tdImage = document.createElement("td");
+                tdImage.innerHTML = '<a class="btn-small round-corners waves-effect waves-light blue accent-2 modal-trigger" data-target="imgView" data-id='+ foods[i]["id"] +'><i class="material-icons left">image</i>view</a>';
+                tr.append(tdId);
+                tr.append(tdName);
+                tr.append(tdPrice);
+                tr.append(tdImage);
+                tBody.append(tr);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('.modal').modal();
+    });
+  </script>
+
+  </body>
+</html>
